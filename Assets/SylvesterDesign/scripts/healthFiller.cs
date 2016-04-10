@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class healthFiller : MonoBehaviour {
 
 	public Image Air;
-	float airFill = 1;
+	public float airFill = 1;
 
 	float timer;
 	float delay;

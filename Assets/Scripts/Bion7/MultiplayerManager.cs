@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Google.Cast.RemoteDisplay;
 
 namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 {
@@ -365,16 +366,18 @@ namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 			}
 		}
 
-		IEnumerator LoadGameScene ()
-		{
-			_readyToLoadGameScene = true;
-			yield return new WaitForSeconds(0.5f);
-			Application.LoadLevel(1);
-		}
-
 		[RPC]
 		public void ClientDidJoin ()
 		{
+			StartCoroutine(WaitforChromeCast());
+		}
+
+		IEnumerator WaitforChromeCast ()
+		{
+			while (CastRemoteDisplayManager.GetInstance().IsCasting() == false)
+			{
+				yield return new WaitForEndOfFrame();
+			}
 			_networkView.RPC ("LoadGameSceneTogether", RPCMode.All);
 		}
 
@@ -382,6 +385,13 @@ namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 		public void LoadGameSceneTogether ()
 		{
 			StartCoroutine(LoadGameScene());
+		}
+
+		IEnumerator LoadGameScene ()
+		{
+			_readyToLoadGameScene = true;
+			yield return new WaitForSeconds(0.5f);
+			Application.LoadLevel(1);
 		}
 		
 		#endregion Network events

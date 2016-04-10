@@ -7,7 +7,6 @@ public class GyroController : MonoBehaviour
 {
 	public float Speed = 100f;
 	public double NetworkInterpolationBackTime = 0.11;
-	public GameObject EnemyPrefab;
 
 	private Vector3 _destination;
 	private Transform _transform;
@@ -15,6 +14,7 @@ public class GyroController : MonoBehaviour
 	private NetworkView _networkView;
 	private NetworkTransformInterpolation _transformInterpolation;
 	private string _actorTag = "None";
+	private PlayerManager _playerManager;
 
 	private readonly Color[] kColors = {
 		Color.blue,
@@ -31,13 +31,12 @@ public class GyroController : MonoBehaviour
 		_transform = GetComponent<Transform>();
 		_renderer = GetComponent<Renderer>();
 		_networkView = GetComponent<NetworkView>();
+		_playerManager = GetComponent<PlayerManager>();
 		_destination = transform.position;
-		_renderer.material.color = kColors[Random.Range(0, kColors.Length)];
+//		_renderer.material.color = kColors[Random.Range(0, kColors.Length)];
 
 		_transformInterpolation = new NetworkTransformInterpolation();
 		_transformInterpolation.InterpolationBackTime = NetworkInterpolationBackTime;
-
-
 	}
 
 	// Use this for initialization
@@ -47,21 +46,12 @@ public class GyroController : MonoBehaviour
 		SensorHelper.ActivateRotation();
 		
 		useGUILayout = false;
-
-//		if (Network.isServer)
-//			transform.tag = "Player";
-//		else
-//			transform.tag = "Enemy";
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
-//		if (Input.GetButtonDown ("Fire1")) {
-//			NetworkManagerSingleton.Instance.getRPCNetworkView().RPC ("PlayerFire", RPCMode.All);
-//		}
-
-		if  (transform.tag == "Player")
+		if  (isMine())
 		{
 			// Helper with fallback:
 			transform.rotation = SensorHelper.rotation;
@@ -95,12 +85,12 @@ public class GyroController : MonoBehaviour
 		Vector3 pos = new Vector3();
 		Vector3 rot = new Vector3();
 
-		if (transform.tag == "Player")
+		if (stream.isWriting)
 		{
-			if (stream.isWriting)
+			if (isMine() == true)
 			{
-				Color color = _renderer.material.color;
-				NetworkUtilities.Serialize (ref stream, ref color);
+//				Color color = _renderer.material.color;
+//				NetworkUtilities.Serialize (ref stream, ref color);
 
 				pos = transform.position;
 				rot = transform.eulerAngles;
@@ -109,22 +99,32 @@ public class GyroController : MonoBehaviour
 				NetworkUtilities.Serialize (ref stream, ref rot);
 			}
 		}
-		else if (transform.tag == "Enemy")
+		else
 		{
-			if (stream.isReading)
+			if (isMine() == false)
 			{
-				Color color = Color.white;
-				NetworkUtilities.Serialize (ref stream, ref color);
+//				Color color = Color.white;
+//				NetworkUtilities.Serialize (ref stream, ref color);
 				NetworkUtilities.Serialize (ref stream, ref pos);
 				NetworkUtilities.Serialize (ref stream, ref rot);
 
 				transform.position = pos;
 				transform.eulerAngles = rot;
 				
-			_renderer.material.color = color;
+//				_renderer.material.color = color;
 			}
 		}
 		
 //		_transformInterpolation.OnSerializeNetworkView(stream, info, _transform.position, _transform.rotation);
+	}
+
+	public bool isMine ()
+	{
+		if (Network.isServer && _playerManager.playerNumber == PlayerNumber.PlayerOne)
+			return true;
+		else if (Network.isClient && _playerManager.playerNumber == PlayerNumber.PlayerTwo)
+			return true;
+		else
+			return false;
 	}
 }

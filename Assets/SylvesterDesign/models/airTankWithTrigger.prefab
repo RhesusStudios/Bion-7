@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 409756}
   - 33: {fileID: 3383818}
   - 23: {fileID: 2362396}
-  - 65: {fileID: 6562436}
+  - 114: {fileID: 11419886}
   m_Layer: 0
   m_Name: default
   m_TagString: Untagged
@@ -26,6 +26,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 420426}
+  - 54: {fileID: 5436300}
+  - 65: {fileID: 6517216}
+  - 114: {fileID: 11488994}
   m_Layer: 0
   m_Name: airTankWithTrigger
   m_TagString: Untagged
@@ -52,7 +55,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 193850}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.45000005, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 12, z: 1}
   m_LocalScale: {x: .193376839, y: .193376839, z: .193376839}
   m_Children:
   - {fileID: 409756}
@@ -89,18 +92,57 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 152568}
   m_Mesh: {fileID: 4300000, guid: 571f5a29f623f47bd87224725b7f9f2a, type: 3}
---- !u!65 &6562436
+--- !u!54 &5436300
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193850}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: .0500000007
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &6517216
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 152568}
+  m_GameObject: {fileID: 193850}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.73204994, y: 3.90536213, z: 15}
-  m_Center: {x: 0, y: .581671059, z: 0}
+  m_Size: {x: 3, y: 5.5, z: 25}
+  m_Center: {x: 0, y: .800000012, z: 0}
+--- !u!114 &11419886
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 152568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b2ebd0ceda9c80428d9a25309b75c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationVelocity: .300000012
+--- !u!114 &11488994
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef25b75f392316e4fb2e13a5ac47177e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocity: 8.60000038
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
