@@ -32,7 +32,7 @@ namespace LostPolygon.AndroidBluetoothMultiplayer.Examples {
 #if UNITY_ANDROID
             OnBackToMenu();
 #endif
-            CameraFade.StartAlphaFade(Color.black, false, 0.25f, 0f, () => Application.LoadLevel("BluetoothDemoMenu"));
+            CameraFade.StartAlphaFade(Color.black, false, 0.25f, 0f, () => Application.LoadLevel(0));
         }
 
 #if UNITY_ANDROID

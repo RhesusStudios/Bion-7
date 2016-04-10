@@ -3,11 +3,15 @@
 namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 {
 	public class MultiplayerManager : BluetoothDemoGuiBase {
-		public GameObject LeftActorPrefab; // Reference to the player actor
-		public GameObject RightActorPrefab; // Reference to the enemy actor
+//		public GameObject LeftActorPrefab; // Reference to the player actor
+//		public GameObject RightActorPrefab; // Reference to the enemy actor
+//
+//		public Transform SpawnPointSelf;
+//		public Transform SpawnPointParty;
 
-		public Transform SpawnPointSelf;
-		public Transform SpawnPointParty;
+		public GameObject CreateServerButton;
+		public GameObject ConnectToServerButton;
+		public GameObject DisconnectOrStopServerButton;
 		
 		#if !UNITY_ANDROID
 		private void Awake() {
@@ -65,55 +69,115 @@ namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 			AndroidBluetoothMultiplayer.ClientDisconnected -= OnBluetoothClientDisconnected;
 			AndroidBluetoothMultiplayer.DevicePicked -= OnBluetoothDevicePicked;
 		}
-		
-		private void OnGUI() {
+
+		private void Update ()
+		{
 			float scaleFactor = BluetoothExamplesTools.UpdateScaleMobile();
 			// If initialization was successfull, showing the buttons
-			if (_initResult) {
+			if (_initResult)
+			{
 				// If there is no current Bluetooth connectivity
 				BluetoothMultiplayerMode currentMode = AndroidBluetoothMultiplayer.GetCurrentMode();
-				if (currentMode == BluetoothMultiplayerMode.None) {
-					if (GUI.Button(new Rect(10, 10, 150, 50), "Create server")) {
-						// If Bluetooth is enabled, then we can do something right on
-						if (AndroidBluetoothMultiplayer.GetIsBluetoothEnabled()) {
-							AndroidBluetoothMultiplayer.RequestEnableDiscoverability(120);
-							Network.Disconnect(); // Just to be sure
-							AndroidBluetoothMultiplayer.StartServer(kPort);
-						} else {
-							// Otherwise we have to enable Bluetooth first and wait for callback
-							_desiredMode = BluetoothMultiplayerMode.Server;
-							AndroidBluetoothMultiplayer.RequestEnableDiscoverability(120);
-						}
-					}
-					
-					if (GUI.Button(new Rect(170, 10, 150, 50), "Connect to server")) {
-						// If Bluetooth is enabled, then we can do something right on
-						if (AndroidBluetoothMultiplayer.GetIsBluetoothEnabled()) {
-							Network.Disconnect(); // Just to be sure
-							AndroidBluetoothMultiplayer.ShowDeviceList(); // Open device picker dialog
-						} else {
-							// Otherwise we have to enable Bluetooth first and wait for callback
-							_desiredMode = BluetoothMultiplayerMode.Client;
-							AndroidBluetoothMultiplayer.RequestEnableBluetooth();
-						}
-					}
-				} else {
-					// Stop all networking
-					if (GUI.Button(new Rect(10, 10, 150, 50), currentMode  == BluetoothMultiplayerMode.Client ? "Disconnect" : "Stop server")) {
-						if (Network.peerType != NetworkPeerType.Disconnected)
-							Network.Disconnect();
-					}
+				if (currentMode == BluetoothMultiplayerMode.None)
+				{
+					CreateServerButton.SetActive(true);
+					ConnectToServerButton.SetActive(true);
+					DisconnectOrStopServerButton.SetActive(false);
 				}
-			} else {
-				// Show a message if initialization failed for some reason
-				GUI.contentColor = Color.black;
-				GUI.Label(
-					new Rect(10, 10, Screen.width / scaleFactor - 10, 50), 
-					"Bluetooth not available. Are you running this on Bluetooth-capable " +
-					"Android device and AndroidManifest.xml is set up correctly?");
+				else
+				{
+					CreateServerButton.SetActive(false);
+					ConnectToServerButton.SetActive(false);
+					DisconnectOrStopServerButton.SetActive(true);
+				}
 			}
-			
-			DrawBackButton(scaleFactor);
+		}
+		
+//		private void OnGUI() {
+//			float scaleFactor = BluetoothExamplesTools.UpdateScaleMobile();
+//			// If initialization was successfull, showing the buttons
+//			if (_initResult) {
+//				// If there is no current Bluetooth connectivity
+//				BluetoothMultiplayerMode currentMode = AndroidBluetoothMultiplayer.GetCurrentMode();
+//				if (currentMode == BluetoothMultiplayerMode.None) {
+//					if (GUI.Button(new Rect(10, 10, 150, 50), "Create server")) {
+//						// If Bluetooth is enabled, then we can do something right on
+//						if (AndroidBluetoothMultiplayer.GetIsBluetoothEnabled()) {
+//							AndroidBluetoothMultiplayer.RequestEnableDiscoverability(120);
+//							Network.Disconnect(); // Just to be sure
+//							AndroidBluetoothMultiplayer.StartServer(kPort);
+//						} else {
+//							// Otherwise we have to enable Bluetooth first and wait for callback
+//							_desiredMode = BluetoothMultiplayerMode.Server;
+//							AndroidBluetoothMultiplayer.RequestEnableDiscoverability(120);
+//						}
+//					}
+//					
+//					if (GUI.Button(new Rect(170, 10, 150, 50), "Connect to server")) {
+//						// If Bluetooth is enabled, then we can do something right on
+//						if (AndroidBluetoothMultiplayer.GetIsBluetoothEnabled()) {
+//							Network.Disconnect(); // Just to be sure
+//							AndroidBluetoothMultiplayer.ShowDeviceList(); // Open device picker dialog
+//						} else {
+//							// Otherwise we have to enable Bluetooth first and wait for callback
+//							_desiredMode = BluetoothMultiplayerMode.Client;
+//							AndroidBluetoothMultiplayer.RequestEnableBluetooth();
+//						}
+//					}
+//				} else {
+//					// Stop all networking
+//					if (GUI.Button(new Rect(10, 10, 150, 50), currentMode  == BluetoothMultiplayerMode.Client ? "Disconnect" : "Stop server")) {
+//						if (Network.peerType != NetworkPeerType.Disconnected)
+//							Network.Disconnect();
+//					}
+//				}
+//			} else {
+//				// Show a message if initialization failed for some reason
+//				GUI.contentColor = Color.black;
+//				GUI.Label(
+//					new Rect(10, 10, Screen.width / scaleFactor - 10, 50), 
+//					"Bluetooth not available. Are you running this on Bluetooth-capable " +
+//					"Android device and AndroidManifest.xml is set up correctly?");
+//			}
+//		}
+
+		public void CreateServer ()
+		{
+			// If Bluetooth is enabled, then we can do something right on
+			if (AndroidBluetoothMultiplayer.GetIsBluetoothEnabled())
+			{
+				AndroidBluetoothMultiplayer.RequestEnableDiscoverability(120);
+				Network.Disconnect(); // Just to be sure
+				AndroidBluetoothMultiplayer.StartServer(kPort);
+			}
+			else
+			{
+				// Otherwise we have to enable Bluetooth first and wait for callback
+				_desiredMode = BluetoothMultiplayerMode.Server;
+				AndroidBluetoothMultiplayer.RequestEnableDiscoverability(120);
+			}
+		}
+
+		public void ConnectToServer ()
+		{
+			// If Bluetooth is enabled, then we can do something right on
+			if (AndroidBluetoothMultiplayer.GetIsBluetoothEnabled())
+			{
+				Network.Disconnect(); // Just to be sure
+				AndroidBluetoothMultiplayer.ShowDeviceList(); // Open device picker dialog
+			}
+			else
+			{
+				// Otherwise we have to enable Bluetooth first and wait for callback
+				_desiredMode = BluetoothMultiplayerMode.Client;
+				AndroidBluetoothMultiplayer.RequestEnableBluetooth();
+			}
+		}
+
+		public void DisconnectOrStopServer ()
+		{
+			if (Network.peerType != NetworkPeerType.Disconnected)
+				Network.Disconnect();
 		}
 		
 		protected override void OnBackToMenu() {
@@ -245,24 +309,32 @@ namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 		private void OnConnectedToServer() {
 			Debug.Log("Connected to server");
 			NetworkManagerSingleton.Instance.PlayerCount++;
+			LoadGameScene();
 			
 			// Instantiating a simple test actor
-//			Network.Instantiate(RightActorPrefab, SpawnPointParty.position, Quaternion.identity, 0);
+//			Network.Instantiate(RightActorPrefab, new Vector3(3f, 0f, 0f), Quaternion.identity, 0);
 
-			LeftActorPrefab.transform.tag = "Enemy";
-			RightActorPrefab.transform.tag = "Player";
+//			LeftActorPrefab.transform.tag = "Enemy";
+//			RightActorPrefab.transform.tag = "Player";
 		}
 		
 		private void OnServerInitialized() {
 			Debug.Log("Server initialized");
 			NetworkManagerSingleton.Instance.PlayerCount++;
+			LoadGameScene();
 			
 			// Instantiating a simple test actor
 			if (Network.isServer) {
-//				Network.Instantiate(LeftActorPrefab, SpawnPointSelf.position, Quaternion.identity, 0);
-				LeftActorPrefab.transform.tag = "Player";
-				RightActorPrefab.transform.tag = "Enemy";
+//				Network.Instantiate(LeftActorPrefab, new Vector3(-3f, 0f, 0f), Quaternion.identity, 0);
+
+//				LeftActorPrefab.transform.tag = "Player";
+//				RightActorPrefab.transform.tag = "Enemy";
 			}
+		}
+
+		private void LoadGameScene ()
+		{
+			Application.LoadLevel(1);
 		}
 		
 		#endregion Network events
