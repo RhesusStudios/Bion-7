@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 {
@@ -12,6 +13,11 @@ namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 		public GameObject CreateServerButton;
 		public GameObject ConnectToServerButton;
 		public GameObject DisconnectOrStopServerButton;
+		public GameObject WaitingForOpponentToJoinLabel;
+		public GameObject ReadyToLoadGameScene;
+
+		private NetworkView _networkView;
+		private bool _readyToLoadGameScene = false;
 		
 		#if !UNITY_ANDROID
 		private void Awake() {
@@ -49,6 +55,8 @@ namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 			AndroidBluetoothMultiplayer.ClientConnected += OnBluetoothClientConnected;
 			AndroidBluetoothMultiplayer.ClientDisconnected += OnBluetoothClientDisconnected;
 			AndroidBluetoothMultiplayer.DevicePicked += OnBluetoothDevicePicked;
+
+			_networkView = GetComponent<NetworkView>();
 		}
 		
 		// Don't forget to unregister the event delegates!
@@ -78,17 +86,41 @@ namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 			{
 				// If there is no current Bluetooth connectivity
 				BluetoothMultiplayerMode currentMode = AndroidBluetoothMultiplayer.GetCurrentMode();
-				if (currentMode == BluetoothMultiplayerMode.None)
-				{
-					CreateServerButton.SetActive(true);
-					ConnectToServerButton.SetActive(true);
-					DisconnectOrStopServerButton.SetActive(false);
-				}
-				else
+
+				if (_readyToLoadGameScene)
 				{
 					CreateServerButton.SetActive(false);
 					ConnectToServerButton.SetActive(false);
-					DisconnectOrStopServerButton.SetActive(true);
+					DisconnectOrStopServerButton.SetActive(false);
+					WaitingForOpponentToJoinLabel.SetActive(false);
+					ReadyToLoadGameScene.SetActive(true);
+				}
+				else
+				{
+					if (currentMode == BluetoothMultiplayerMode.None)
+					{
+						CreateServerButton.SetActive(true);
+						ConnectToServerButton.SetActive(true);
+						DisconnectOrStopServerButton.SetActive(false);
+						WaitingForOpponentToJoinLabel.SetActive(false);
+						ReadyToLoadGameScene.SetActive(false);
+					}
+					else
+					{
+						CreateServerButton.SetActive(false);
+						ConnectToServerButton.SetActive(false);
+						DisconnectOrStopServerButton.SetActive(true);
+						ReadyToLoadGameScene.SetActive(false);
+
+						if (currentMode == BluetoothMultiplayerMode.Server)
+						{
+							WaitingForOpponentToJoinLabel.SetActive(true);
+						}
+						else
+						{
+							WaitingForOpponentToJoinLabel.SetActive(false);
+						}
+					}
 				}
 			}
 		}
@@ -309,7 +341,8 @@ namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 		private void OnConnectedToServer() {
 			Debug.Log("Connected to server");
 			NetworkManagerSingleton.Instance.PlayerCount++;
-			LoadGameScene();
+//			LoadGameScene();
+			_networkView.RPC ("ClientDidJoin", RPCMode.Server);
 			
 			// Instantiating a simple test actor
 //			Network.Instantiate(RightActorPrefab, new Vector3(3f, 0f, 0f), Quaternion.identity, 0);
@@ -321,7 +354,7 @@ namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 		private void OnServerInitialized() {
 			Debug.Log("Server initialized");
 			NetworkManagerSingleton.Instance.PlayerCount++;
-			LoadGameScene();
+//			LoadGameScene();
 			
 			// Instantiating a simple test actor
 			if (Network.isServer) {
@@ -332,9 +365,23 @@ namespace LostPolygon.AndroidBluetoothMultiplayer.Examples
 			}
 		}
 
-		private void LoadGameScene ()
+		IEnumerator LoadGameScene ()
 		{
+			_readyToLoadGameScene = true;
+			yield return new WaitForSeconds(0.5f);
 			Application.LoadLevel(1);
+		}
+
+		[RPC]
+		public void ClientDidJoin ()
+		{
+			_networkView.RPC ("LoadGameSceneTogether", RPCMode.All);
+		}
+
+		[RPC]
+		public void LoadGameSceneTogether ()
+		{
+			StartCoroutine(LoadGameScene());
 		}
 		
 		#endregion Network events
