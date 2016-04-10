@@ -326,63 +326,21 @@ Prefab:
       propertyPath: m_Name
       value: JustApeModified_1
       objectReference: {fileID: 0}
+    - target: {fileID: 14840226, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
+      propertyPath: m_ViewID.m_ID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 14840226, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464142, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
+      propertyPath: health
+      value: 
+      objectReference: {fileID: 1998250949}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &230424105 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 139628, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
-  m_PrefabInternal: {fileID: 230424104}
---- !u!65 &230424106
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 230424105}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 3, y: 2.20000005, z: 1}
-  m_Center: {x: 0, y: 1.10000002, z: 0}
---- !u!148 &230424108
-NetworkView:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 230424105}
-  m_Enabled: 1
-  m_StateSynchronization: 2
-  m_Observed: {fileID: 230424110}
-  m_ViewID:
-    m_ID: 2
-    m_Type: 1
---- !u!114 &230424109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 230424105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e64ee6ecb6caef47b36e6e2b63794e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerNumber: 0
-  health: {fileID: 1998250949}
---- !u!114 &230424110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 230424105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8e2ad56cd1a1b9468c7d328bb96587c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Speed: 100
-  NetworkInterpolationBackTime: .11
 --- !u!1 &346930348
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,7 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915b0e0ad20a25d40af4200d5a2e1e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  airTankPrefab: {fileID: 0}
+  airTankPrefab: {fileID: 193850, guid: 5686e5f62b5a96443920452ed1ae2cef, type: 2}
   spawnMaxIntervalInSeconds: 20
 --- !u!4 &346930350
 Transform:
@@ -1025,7 +983,20 @@ Prefab:
       propertyPath: m_Name
       value: JustApeModified_2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 14840226, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
+      propertyPath: m_ViewID.m_ID
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 14840226, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
+      propertyPath: m_ViewID.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6559734, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
+    - {fileID: 14840226, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
+    - {fileID: 11499010, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
+    - {fileID: 11464142, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
+    - {fileID: 11422602, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: e31e2058c797c0c42bf022c1a5bbf748, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1731274650 stripped
@@ -1053,10 +1024,21 @@ BoxCollider:
   m_GameObject: {fileID: 1731274650}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 3, y: 2.20000005, z: 1}
   m_Center: {x: 0, y: 1.10000002, z: 0}
+--- !u!114 &1731274653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1731274650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45c61643f6680704fb4f0b10705f3a0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!148 &1731274654
 NetworkView:
   m_ObjectHideFlags: 0
@@ -1065,7 +1047,7 @@ NetworkView:
   m_GameObject: {fileID: 1731274650}
   m_Enabled: 1
   m_StateSynchronization: 2
-  m_Observed: {fileID: 1731274655}
+  m_Observed: {fileID: 1731274653}
   m_ViewID:
     m_ID: 1
     m_Type: 1
@@ -1077,11 +1059,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1731274650}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8e2ad56cd1a1b9468c7d328bb96587c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6da393f4ef51d3f46a62ec12a205233f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 100
-  NetworkInterpolationBackTime: .11
+  isControllable: 1
+  strength: .5
+  movementStrength: 10
+  showGUI: 0
 --- !u!1001 &1950892982
 Prefab:
   m_ObjectHideFlags: 0
@@ -1123,7 +1107,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 193850, guid: 5686e5f62b5a96443920452ed1ae2cef, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5686e5f62b5a96443920452ed1ae2cef, type: 2}

@@ -19,6 +19,14 @@ public class NetworkUtilities
 		stream.Serialize (ref obj.z);
 	}
 
+	public static void Serialize (ref BitStream stream, ref Quaternion obj)
+	{
+		stream.Serialize (ref obj.x);
+		stream.Serialize (ref obj.y);
+		stream.Serialize (ref obj.z);
+		stream.Serialize (ref obj.w);
+	}
+
 	public static void Serialize (ref BitStream stream, ref Color obj)
 	{
 		stream.Serialize (ref obj.r);

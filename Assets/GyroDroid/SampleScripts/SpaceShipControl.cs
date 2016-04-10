@@ -15,6 +15,8 @@ using System.Collections;
 
 public class SpaceShipControl : MonoBehaviour {
 
+	public bool isControllable = true;
+
 	void Start() {
 		SensorHelper.ActivateRotation();
 		initialSensorValue = SensorHelper.rotation;
@@ -49,6 +51,8 @@ public class SpaceShipControl : MonoBehaviour {
 	public float movementStrength = 10;
 		
 	void Update() {
+		if (!isControllable) return;
+
 		if(!gotFirstValue) return;
 		
 		// calculate difference between current rotation and initial rotation
@@ -64,11 +68,12 @@ public class SpaceShipControl : MonoBehaviour {
 		// for an airplane: disable yaw,
 		// only use roll and pitch
 		differenceEuler.y = 0;
+		differenceEuler.x = 0;
 		
 		// rotate us
 		transform.Rotate(differenceEuler * Time.deltaTime * strength);
 		// move forward all the time (no speed control)
-		transform.Translate(Vector3.forward * movementStrength * Time.deltaTime, Space.Self);
+//		transform.Translate(Vector3.forward * movementStrength * Time.deltaTime, Space.Self);
 	}
 	
 	/// <summary>
