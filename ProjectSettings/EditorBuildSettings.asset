@@ -5,5 +5,17 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level 01 5.x.unity
+  - enabled: 0
+    path: Assets/AndroidBluetoothMultiplayer/Demos/Scenes/BluetoothDemoMenu.unity
+  - enabled: 0
+    path: Assets/AndroidBluetoothMultiplayer/Demos/Scenes/BluetoothDiscoveryDemo.unity
+  - enabled: 0
+    path: Assets/AndroidBluetoothMultiplayer/Demos/Scenes/BluetoothFileTransferDemo.unity
+  - enabled: 0
+    path: Assets/AndroidBluetoothMultiplayer/Demos/Scenes/BluetoothMultiplayerDemo.unity
+  - enabled: 0
+    path: Assets/Scenes/Bion-7/Scene_Main.unity
+  - enabled: 1
+    path: Assets/Scenes/Bion-7/Scene_Game.unity
